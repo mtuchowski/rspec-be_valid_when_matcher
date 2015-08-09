@@ -11,7 +11,12 @@
 # The `.rspec` file also contains a few flags that are not defaults but that are commonly wanted.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+require 'rspec/be_valid_when_matcher'
+
 RSpec.configure do |config|
+  config.include RSpec::BeValidWhenMatcher
+
   # rspec-expectations config goes here.
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description` and
