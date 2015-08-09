@@ -8,8 +8,11 @@ module RSpec
     # @api
     # @private
     class BeValidWhen
-
       def initialize(field)
+        unless field.instance_of? Symbol
+          fail ArgumentError, "field name should be symbol (#{field.inspect})"
+        end
+
         @field     = field
         @value_set = false
         @value     = nil
@@ -17,10 +20,12 @@ module RSpec
       end
 
       def matches?(model)
+        assert_value_existence
         @model = model
       end
 
       def does_not_match?(model)
+        assert_value_existence
         @model = model
       end
 
@@ -45,36 +50,38 @@ module RSpec
       end
 
       def is(value)
-        set_value(value)
+        value(value)
         self
       end
 
       private
 
-      def set_value(value)
+      def value(value)
         @value_set = true
         @value = value
+      end
+
+      def assert_value_existence
+        fail ArgumentError, 'missing value' unless @value_set
       end
 
       def format_message
         "##{@field} is #{@value.inspect}"
       end
-
     end
 
     # Model validity assertion.
     def be_valid_when(*args)
-      if args.size < 1 || args.size > 2
-        raise ArgumentError, "wrong number of arguments (#{args.size} insted of 1 or 2)"
-      end
-
+      number_of_arguments = args.size
       field_name = args.shift
 
-      if ! field_name.instance_of? Symbol
-        raise ArgumentError, "field name should be symbol (#{field_name.inspect})"
+      if number_of_arguments == 1
+        BeValidWhen.new field_name
+      elsif number_of_arguments == 2
+        BeValidWhen.new(field_name).is(*args)
+      else
+        fail ArgumentError, "wrong number of arguments (#{number_of_arguments} insted of 1 or 2)"
       end
-
-      BeValidWhen.new(field_name).is(*args)
     end
   end
 end

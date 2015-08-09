@@ -10,13 +10,12 @@ end
 describe 'be_valid_when' do
   # Declarations
 
-  let(:matcher) { be_valid_when :field, 'value' }
-  let(:model)   { FakeModel.new }
+  let(:model) { FakeModel.new }
 
   # General specs
 
   context 'matcher' do
-    subject { matcher }
+    subject { be_valid_when :field, 'value' }
 
     it 'is expected to be of proper type' do
       expect(subject).to be_an_instance_of RSpec::BeValidWhenMatcher::BeValidWhen
@@ -43,17 +42,42 @@ describe 'be_valid_when' do
 
   context 'field name argument' do
     it 'is expected to be provided' do
-      expect { be_valid_when }.to raise_error(ArgumentError)
+      expect { be_valid_when }.to raise_error ArgumentError
     end
 
     it 'is expected to bo a symbol' do
-      expect { be_valid_when 42 }.to raise_error(ArgumentError)
+      expect { be_valid_when 42 }.to raise_error ArgumentError
+      expect { be_valid_when :field }.not_to raise_error
+    end
+
+    context 'when is the only argument provided' do
+      subject { be_valid_when :field }
+
+      it 'should fail on #matches?' do
+        expect { subject.matches? model }.to raise_error ArgumentError
+      end
+
+      it 'should fail on #does_not_match?' do
+        expect { subject.does_not_match? model }.to raise_error ArgumentError
+      end
     end
   end
 
   context 'field value argument' do
     it 'can be specified when declating matcher' do
       expect { be_valid_when :field, 'value' }.not_to raise_error
+    end
+
+    context 'if provided' do
+      subject { be_valid_when :field, 'value' }
+
+      it 'should not fail on #matches?' do
+        expect { subject.matches? model }.not_to raise_error
+      end
+
+      it 'should not fail on #does_not_match?' do
+        expect { subject.does_not_match? model }.not_to raise_error
+      end
     end
   end
 
@@ -64,36 +88,25 @@ describe 'be_valid_when' do
   # General matching interface specs
 
   context 'if not provided with model to match' do
-    it 'should fail on #matches?' do
-      expect { matcher.matches? }.to raise_error(ArgumentError)
-    end
-
-    it 'should fail on #does_not_match?' do
-      expect { matcher.does_not_match? }.to raise_error(ArgumentError)
-    end
-  end
-
-  context 'if only field symbol given' do
-    subject { be_valid_when :field }
-
-    it 'should fail on #matches?' do
-      expect { subject.matches? model }.to raise_error(ArgumentError)
-    end
-
-    it 'should fail on #does_not_match?' do
-      expect { subject.does_not_match? model }.to raise_error(ArgumentError)
-    end
-  end
-
-  context 'if given field value on matcher declaration' do
     subject { be_valid_when :field, 'value' }
 
-    it 'should not fail on #matches?' do
-       expect { subject.matches? model }.not_to raise_error
+    it 'should fail on #matches?' do
+      expect { subject.matches? }.to raise_error ArgumentError
     end
 
-    it 'should not fail on #does_not_match?' do
-       expect { subject.does_not_match? model }.not_to raise_error
+    it 'should fail on #does_not_match?' do
+      expect { subject.does_not_match? }.to raise_error ArgumentError
+    end
+  end
+
+  context '#is method' do
+    context 'when given one argument' do
+      subject { be_valid_when(:field).is('value') }
+
+      it 'sets the field value' do
+        expect { subject.matches? model }.not_to raise_error
+        expect { subject.does_not_match? model }.not_to raise_error
+      end
     end
   end
 
@@ -120,11 +133,12 @@ describe 'be_valid_when' do
   end
 
   context 'description' do
+    subject { be_valid_when :field, 'value' }
+
     let(:description_regex) { /^be valid when #field is "value"$/ }
 
     it 'provides field name and field value' do
-      expect(matcher.description).to match description_regex
+      expect(subject.description).to match description_regex
     end
   end
-
 end
