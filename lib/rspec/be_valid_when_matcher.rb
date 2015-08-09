@@ -30,14 +30,19 @@ module RSpec
       end
 
       def failure_message
+        assert_value_existence
+        assert_model_existance
         "expected #{@model.inspect} to be valid when #{format_message}"
       end
 
       def failure_message_when_negated
+        assert_value_existence
+        assert_model_existance
         "expected #{@model.inspect} not to be valid when #{format_message}"
       end
 
       def description
+        assert_value_existence
         "be valid when #{format_message}"
       end
 
@@ -63,6 +68,10 @@ module RSpec
 
       def assert_value_existence
         fail ArgumentError, 'missing value' unless @value_set
+      end
+
+      def assert_model_existance
+        fail ArgumentError, 'missing model' if @model == nil
       end
 
       def format_message

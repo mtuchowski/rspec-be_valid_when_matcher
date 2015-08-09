@@ -15,7 +15,7 @@ describe 'be_valid_when' do
   # General specs
 
   context 'matcher' do
-    subject { be_valid_when :field, 'value' }
+    subject { be_valid_when :field }
 
     it 'is expected to be of proper type' do
       expect(subject).to be_an_instance_of RSpec::BeValidWhenMatcher::BeValidWhen
@@ -60,6 +60,18 @@ describe 'be_valid_when' do
       it 'should fail on #does_not_match?' do
         expect { subject.does_not_match? model }.to raise_error ArgumentError
       end
+
+      it 'should fail on #failure_message' do
+        expect { subject.failure_message }.to raise_error ArgumentError
+      end
+
+      it 'should fail on #failure_message_when_negated' do
+        expect { subject.failure_message_when_negated }.to raise_error ArgumentError
+      end
+
+      it 'should fail on #description' do
+        expect { subject.description }.to raise_error ArgumentError
+      end
     end
   end
 
@@ -97,6 +109,14 @@ describe 'be_valid_when' do
     it 'should fail on #does_not_match?' do
       expect { subject.does_not_match? }.to raise_error ArgumentError
     end
+
+    it 'should fail on #failure_message' do
+      expect { subject.failure_message }.to raise_error ArgumentError
+    end
+
+    it 'should fail on #failure_message_when_negated' do
+      expect { subject.failure_message_when_negated }.to raise_error ArgumentError
+    end
   end
 
   context '#is method' do
@@ -106,6 +126,7 @@ describe 'be_valid_when' do
       it 'sets the field value' do
         expect { subject.matches? model }.not_to raise_error
         expect { subject.does_not_match? model }.not_to raise_error
+        expect { subject.description }.not_to raise_error
       end
     end
   end
