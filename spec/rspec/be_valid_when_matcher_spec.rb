@@ -120,6 +120,10 @@ describe 'be_valid_when' do
   end
 
   context '#is method' do
+    it 'should fail if no arguments given' do
+      expect { be_valid_when(:field).is }.to raise_error ArgumentError
+    end
+
     context 'when given one argument' do
       subject { be_valid_when(:field).is('value') }
 
@@ -134,32 +138,68 @@ describe 'be_valid_when' do
   # Message methods specs
 
   context 'failure message' do
-    subject { be_valid_when :field, 'value' }
+    context 'without custom message' do
+      subject { be_valid_when :field, 'value' }
 
-    let(:message_regex) { /^expected #<.*> to be valid when #field is "value"$/ }
-
-    it 'provides subject model, field name and field value' do
-      subject.matches?(model)
-      expect(subject.failure_message).to match message_regex
-    end
-
-    context 'when negated' do
-      let(:negated_message_regex) { /^expected #<.*> not to be valid when #field is "value"$/ }
+      let(:message_regex) { /^expected #<.*> to be valid when #field is "value"$/ }
 
       it 'provides subject model, field name and field value' do
-        subject.does_not_match?(model)
-        expect(subject.failure_message_when_negated).to match negated_message_regex
+        subject.matches?(model)
+        expect(subject.failure_message).to match message_regex
+      end
+
+      context 'when negated' do
+        let(:negated_message_regex) { /^expected #<.*> not to be valid when #field is "value"$/ }
+
+        it 'provides subject model, field name and field value' do
+          subject.does_not_match?(model)
+          expect(subject.failure_message_when_negated).to match negated_message_regex
+        end
+      end
+    end
+
+    context 'with custom message' do
+      subject { be_valid_when(:field).is('some text', 'value') }
+
+      let(:message_regex) { /^expected #<.*> to be valid when #field is some text \("value"\)$/ }
+
+      it 'provides subject model, field name and field value' do
+        subject.matches?(model)
+        expect(subject.failure_message).to match message_regex
+      end
+
+      context 'when negated' do
+        let(:negated_message_regex) do
+          /^expected #<.*> not to be valid when #field is some text \("value"\)$/
+        end
+
+        it 'provides subject model, field name and field value' do
+          subject.does_not_match?(model)
+          expect(subject.failure_message_when_negated).to match negated_message_regex
+        end
       end
     end
   end
 
   context 'description' do
-    subject { be_valid_when :field, 'value' }
+    context 'without custom message' do
+      subject { be_valid_when :field, 'value' }
 
-    let(:description_regex) { /^be valid when #field is "value"$/ }
+      let(:description_regex) { /^be valid when #field is "value"$/ }
 
-    it 'provides field name and field value' do
-      expect(subject.description).to match description_regex
+      it 'provides field name and field value' do
+        expect(subject.description).to match description_regex
+      end
+    end
+
+    context 'with custom message' do
+      subject { be_valid_when(:field).is('some text', 'value') }
+
+      let(:description_regex) { /^be valid when #field is some text \("value"\)$/ }
+
+      it 'provides field name and field value' do
+        expect(subject.description).to match description_regex
+      end
     end
   end
 end

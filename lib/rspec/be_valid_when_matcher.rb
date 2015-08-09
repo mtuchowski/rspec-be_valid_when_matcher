@@ -54,8 +54,11 @@ module RSpec
         false
       end
 
-      def is(value)
-        value(value)
+      def is(*args)
+        @message = args.shift if args.size == 2
+
+        value(*args)
+
         self
       end
 
@@ -71,11 +74,13 @@ module RSpec
       end
 
       def assert_model_existance
-        fail ArgumentError, 'missing model' if @model == nil
+        fail ArgumentError, 'missing model' if @model.nil?
       end
 
       def format_message
-        "##{@field} is #{@value.inspect}"
+        value = @value.inspect
+        message = @message.nil? ? "is #{value}" : "is #{@message} (#{value})"
+        "##{@field} #{message}"
       end
     end
 
