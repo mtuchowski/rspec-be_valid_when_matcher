@@ -1,0 +1,3 @@
+# RuboCop tool configuration used by rake lint:style command.
+Metrics/LineLength:
+  Max: 99
