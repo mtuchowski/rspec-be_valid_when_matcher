@@ -3,8 +3,12 @@ require 'active_model'
 # @private
 class FakeModel
   include ActiveModel::Validations
+
   attr_accessor :field
-  validates_presence_of :field
+  attr_accessor :other_field
+
+  validates :field, presence: true
+  validates :other_field, presence: true
 end
 
 describe 'be_valid_when' do
@@ -131,6 +135,54 @@ describe 'be_valid_when' do
         expect { subject.matches? model }.not_to raise_error
         expect { subject.does_not_match? model }.not_to raise_error
         expect { subject.description }.not_to raise_error
+      end
+    end
+
+    context 'when given two arguments' do
+      subject { be_valid_when(:field).is('some text', 'value') }
+
+      it 'sets the custom message with first argument' do
+        skip 'tested under failure message and description specs'
+      end
+
+      it 'sets the field value with the second argument' do
+        expect { subject.matches? model }.not_to raise_error
+        expect { subject.does_not_match? model }.not_to raise_error
+        expect { subject.description }.not_to raise_error
+      end
+    end
+
+    it 'should fail if more that two arguments given' do
+      expect { be_valid_when(:field).is('one', 'two', 'three') }.to raise_error ArgumentError
+    end
+  end
+
+  context 'when asserting validity of model' do
+    subject { be_valid_when :field }
+
+    context 'using #matches?' do
+      it 'is setting the proper field using the provided value' do
+        model.field = nil
+        subject.is('value').matches? model
+        expect(model.field).to eq 'value'
+      end
+
+      it 'returns proper result' do
+        expect(subject.is('value').matches? model).to eq true
+        expect(subject.is(nil).matches? model).to eq false
+      end
+    end
+
+    context 'using #does_not_match?' do
+      it 'is setting the proper field using the provided value' do
+        model.field = nil
+        subject.is('value').does_not_match? model
+        expect(model.field).to eq 'value'
+      end
+
+      it 'returns proper result' do
+        expect(subject.is('value').does_not_match? model).to eq false
+        expect(subject.is(nil).does_not_match? model).to eq true
       end
     end
   end

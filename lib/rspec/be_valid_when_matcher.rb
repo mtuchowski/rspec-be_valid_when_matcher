@@ -21,28 +21,38 @@ module RSpec
 
       def matches?(model)
         assert_value_existence
+
         @model = model
+        @model.send "#{@field}=", @value
+        @model.validate
+        @model.errors[@field].empty?
       end
 
       def does_not_match?(model)
         assert_value_existence
+
         @model = model
+        @model.send "#{@field}=", @value
+        @model.invalid? && !@model.errors[@field].empty?
       end
 
       def failure_message
         assert_value_existence
         assert_model_existance
+
         "expected #{@model.inspect} to be valid when #{format_message}"
       end
 
       def failure_message_when_negated
         assert_value_existence
         assert_model_existance
+
         "expected #{@model.inspect} not to be valid when #{format_message}"
       end
 
       def description
         assert_value_existence
+
         "be valid when #{format_message}"
       end
 
@@ -55,18 +65,17 @@ module RSpec
       end
 
       def is(*args)
-        @message = args.shift if args.size == 2
+        @message = args.shift if args.size > 1
 
         value(*args)
-
         self
       end
 
       private
 
       def value(value)
-        @value_set = true
         @value = value
+        @value_set = true
       end
 
       def assert_value_existence
