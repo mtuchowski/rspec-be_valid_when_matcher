@@ -1,2 +1,6 @@
-# Ignore RSpec status persistence file.
+# RSpec status persistence file.
 spec/examples.cache
+
+# YARD generated files.
+.yardoc/
+doc/
