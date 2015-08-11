@@ -1,4 +1,4 @@
-# be-valid-when-matcher
+# rspec-be_valid_when_matcher
 
 RSpec matcher for testing ActiveRecord models with a fluent and clear language.
 
