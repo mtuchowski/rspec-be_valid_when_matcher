@@ -97,8 +97,26 @@ describe 'be_valid_when' do
     end
   end
 
-  it 'should not accept more arguments than field symbol and field value' do
-    expect { be_valid_when :field, 'value', 'next value' }.to raise_error ArgumentError
+  context 'custom message argument' do
+    it 'can be specified when declating matcher' do
+      expect { be_valid_when :field, 'value', 'some text' }.not_to raise_error
+    end
+
+    context 'if provided' do
+      subject { be_valid_when :field, 'value', 'some text' }
+
+      it 'should not fail on #matches?' do
+        expect { subject.matches? model }.not_to raise_error
+      end
+
+      it 'should not fail on #does_not_match?' do
+        expect { subject.does_not_match? model }.not_to raise_error
+      end
+    end
+  end
+
+  it 'should not accept more arguments than field symbol, field value and custom message' do
+    expect { be_valid_when :field, 'value', 'some text', 'other arg' }.to raise_error ArgumentError
   end
 
   # General matching interface specs
@@ -139,7 +157,7 @@ describe 'be_valid_when' do
     end
 
     context 'when given two arguments' do
-      subject { be_valid_when(:field).is('some text', 'value') }
+      subject { be_valid_when(:field).is('value', 'some text') }
 
       it 'sets the custom message with first argument' do
         skip 'tested under failure message and description specs'
@@ -211,7 +229,7 @@ describe 'be_valid_when' do
     end
 
     context 'with custom message' do
-      subject { be_valid_when(:field).is('some text', 'value') }
+      subject { be_valid_when(:field).is('value', 'some text') }
 
       let(:message_regex) { /^expected #<.*> to be valid when #field is some text \("value"\)$/ }
 
@@ -245,7 +263,7 @@ describe 'be_valid_when' do
     end
 
     context 'with custom message' do
-      subject { be_valid_when(:field).is('some text', 'value') }
+      subject { be_valid_when(:field).is('value', 'some text') }
 
       let(:description_regex) { /^be valid when #field is some text \("value"\)$/ }
 
