@@ -211,7 +211,9 @@ describe 'be_valid_when' do
     context 'without custom message' do
       subject { be_valid_when :field, 'value' }
 
-      let(:message_regex) { /^expected #<.*> to be valid when #field is "value"$/ }
+      let(:message_regex) do
+        /^expected #<.*> to be valid when #field is "value"$/
+      end
 
       it 'provides subject model, field name and field value' do
         subject.matches?(model)
@@ -219,7 +221,9 @@ describe 'be_valid_when' do
       end
 
       context 'when negated' do
-        let(:negated_message_regex) { /^expected #<.*> not to be valid when #field is "value"$/ }
+        let(:negated_message_regex) do
+          /^expected #<.*> not to be valid when #field is "value"$/
+        end
 
         it 'provides subject model, field name and field value' do
           subject.does_not_match?(model)
@@ -231,7 +235,9 @@ describe 'be_valid_when' do
     context 'with custom message' do
       subject { be_valid_when(:field).is('value', 'some text') }
 
-      let(:message_regex) { /^expected #<.*> to be valid when #field is some text \("value"\)$/ }
+      let(:message_regex) do
+        /^expected #<.*> to be valid when #field is some text \("value"\)$/
+      end
 
       it 'provides subject model, field name and field value' do
         subject.matches?(model)
