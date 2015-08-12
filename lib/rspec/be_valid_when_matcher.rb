@@ -5,6 +5,8 @@ require 'rspec'
 module RSpec
   # Container module for be_valid_when matcher definition and implementation.
   module BeValidWhenMatcher
+    # rubocop:disable Style/PredicateName
+
     # Provides the implementation for `be_valid_when` matcher.
     # Not intended to be instantiated directly.
     # @api private
