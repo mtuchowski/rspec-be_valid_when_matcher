@@ -124,6 +124,11 @@ module RSpec
         self
       end
 
+      # Used to setup matcher for checking `nil` `value`.
+      def is_not_present
+        is(nil, 'not present')
+      end
+
       private
 
       attr_writer :message

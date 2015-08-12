@@ -205,6 +205,39 @@ describe 'be_valid_when' do
     end
   end
 
+  # Helper methods specs
+
+  context '#is_not_present method' do
+    # @private
+    class IsNotPresentTestModel
+      include ActiveModel::Validations
+
+      attr_accessor :nil_field
+      attr_accessor :not_nil_field
+
+      validates :nil_field, absence: true
+      validates :not_nil_field, presence: true
+    end
+
+    let(:model) { IsNotPresentTestModel.new }
+
+    let(:passing_matcher) { be_valid_when(:nil_field).is_not_present }
+    let(:failing_matcher) { be_valid_when(:not_nil_field).is_not_present }
+
+    let(:description) { /^be valid when #nil_field is not present \(nil\)$/ }
+
+    it 'has the correct description' do
+      expect(passing_matcher.description).to match description
+    end
+
+    it 'returns proper result' do
+      expect(passing_matcher.matches? model).to eq true
+      expect(passing_matcher.does_not_match? model).to eq false
+      expect(failing_matcher.matches? model).to eq false
+      expect(failing_matcher.does_not_match? model).to eq true
+    end
+  end
+
   # Message methods specs
 
   context 'failure message' do
