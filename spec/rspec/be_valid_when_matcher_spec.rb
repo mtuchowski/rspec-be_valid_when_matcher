@@ -159,14 +159,14 @@ describe 'be_valid_when' do
     context 'when given two arguments' do
       subject { be_valid_when(:field).is('value', 'some text') }
 
-      it 'sets the custom message with first argument' do
-        skip 'tested under failure message and description specs'
-      end
-
-      it 'sets the field value with the second argument' do
+      it 'sets the field value with the first argument' do
         expect { subject.matches? model }.not_to raise_error
         expect { subject.does_not_match? model }.not_to raise_error
         expect { subject.description }.not_to raise_error
+      end
+
+      it 'sets the custom message with second argument' do
+        skip 'tested under failure message and description specs'
       end
     end
 

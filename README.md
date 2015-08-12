@@ -40,9 +40,9 @@ Here's an example using rspec-be_valid_when_matcher:
 RSpec.describe Person do
   subject { Person.new }
 
-  it { is_expected.to be_valid_when :name, 'Frank', 'string' }
-  it { is_expected.to be_valid_when :age, 42, 'number' }
-  it { is_expected.not_to be_valid_when :age, -1, 'negative' }
+  it { is_expected.to be_valid_when :name, 'Frank', 'some text' }
+  it { is_expected.to be_valid_when :age, 42, 'positive number' }
+  it { is_expected.not_to be_valid_when :age, -1, 'negative number' }
 end
 ```
 
@@ -52,8 +52,8 @@ say for negative number check, it'll display the following message:
 ```console
 Failures:
 
-  1) Person should not be valid when #age is negative (-1)
-     Failure/Error: it { is_expected.not_to be_valid_when :age, -1, 'negative' }
+  1) Person should not be valid when #age is negative number (-1)
+     Failure/Error: it { is_expected.not_to be_valid_when :age, -1, 'negative number' }
 ```
 
 ## MIT Licensed
