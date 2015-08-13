@@ -35,11 +35,7 @@ module RSpec
       # @param model [Object] an Object implementing `ActiveModel::Validations`.
       # @return [Boolean] `true` if there are no errors on `field`, `false` otherwise.
       def matches?(model)
-        assert_value_existence
-
-        @model = model
-        @model.send "#{@field}=", @value
-        @model.validate
+        setup_model model
         @model.errors[@field].empty?
       end
 
@@ -53,11 +49,8 @@ module RSpec
       # @param model [Object] an Object implementing `ActiveModel::Validations`.
       # @return [Boolean] `true` if there are errors on `field`, `false` otherwise.
       def does_not_match?(model)
-        assert_value_existence
-
-        @model = model
-        @model.send "#{@field}=", @value
-        @model.invalid? && !@model.errors[@field].empty?
+        setup_model model
+        !@model.errors[@field].empty?
       end
 
       # Called when {#matches?} returns false.
@@ -146,6 +139,14 @@ module RSpec
 
       def assert_model_existance
         fail ArgumentError, 'missing model' if @model.nil?
+      end
+
+      def setup_model(model)
+        assert_value_existence
+
+        @model = model
+        @model.send "#{@field}=", @value
+        @model.validate
       end
 
       def format_message
