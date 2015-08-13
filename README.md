@@ -56,6 +56,27 @@ Failures:
      Failure/Error: it { is_expected.not_to be_valid_when :age, -1, 'negative number' }
 ```
 
+To keep the specs more readable `#is` method can be used to separate `field` and expected `value`
+and optional `message` declaration like so:
+
+```ruby
+RSpec.describe Person do
+  subject { Person.new }
+
+  it { is_expected.to be_valid_when(:name).is('Frank', 'some text') }
+  it { is_expected.to be_valid_when(:age).is(42, 'positive number') }
+  it { is_expected.not_to be_valid_when(:age).is(-1, 'negative number') }
+end
+```
+
+### Built-in checks
+
+#### Presence
+
+```ruby
+  it { is_expected.to be_valid_when(:field).is_not_present } # Uses nil value.
+```
+
 ## MIT Licensed
 
 See [LICENSE](https://github.com/mtuchowski/rspec-be_valid_when_matcher/blob/master/LICENSE) file
