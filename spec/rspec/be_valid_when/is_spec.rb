@@ -37,6 +37,7 @@ describe 'be_valid_when#is' do
   context 'when given two arguments' do
     subject { be_valid_when(:field).is('value', 'some text') }
 
+    let(:description_regex) { /^be valid when #field is some text \("value"\)$/ }
     let(:message_regex) do
       /^expected #<.*> to be valid when #field is some text \("value"\)$/
     end
@@ -48,6 +49,8 @@ describe 'be_valid_when#is' do
 
     it 'sets the custom message with second argument' do
       subject.matches? model
+
+      expect(subject.description).to match description_regex
       expect(subject.failure_message).to match message_regex
       expect(subject.failure_message_when_negated).to match negated_message_regex
     end

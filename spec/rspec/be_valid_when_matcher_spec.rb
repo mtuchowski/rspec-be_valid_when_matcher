@@ -198,24 +198,12 @@ describe 'be_valid_when' do
   end
 
   context 'description' do
-    context 'without custom message' do
-      subject { be_valid_when :field, 'value' }
+    subject { be_valid_when :field, 'value' }
 
-      let(:description_regex) { /^be valid when #field is "value"$/ }
+    let(:description_regex) { /^be valid when #field is "value"$/ }
 
-      it 'provides field name and field value' do
-        expect(subject.description).to match description_regex
-      end
-    end
-
-    context 'with custom message' do
-      subject { be_valid_when(:field).is('value', 'some text') }
-
-      let(:description_regex) { /^be valid when #field is some text \("value"\)$/ }
-
-      it 'provides field name and field value' do
-        expect(subject.description).to match description_regex
-      end
+    it 'provides field name and field value' do
+      expect(subject.description).to match description_regex
     end
   end
 end
