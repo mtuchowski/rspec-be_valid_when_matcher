@@ -124,6 +124,7 @@ module RSpec
         is(nil, 'not present')
       end
 
+      # Used to setup matcher for checking for numeric values.
       def is_number(number = 42)
         fail ArgumentError, 'should be number' unless number.is_a? Numeric
 

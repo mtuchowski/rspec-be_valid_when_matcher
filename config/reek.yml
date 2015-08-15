@@ -1,3 +1,12 @@
 ---
 # Reek tool configuration used by rake lint:maintainability command.
+UtilityFunction:
+  enabled: false
+
+NilCheck:
+  enabled: false
+
+"spec/rspec/be_valid_when":
+  IrresponsibleModule:
+    enabled: false
 ...
