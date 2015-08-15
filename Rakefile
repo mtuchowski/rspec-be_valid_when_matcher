@@ -34,13 +34,13 @@ task :lint do
   Rake::Task['lint:docs'].invoke
 end
 
-desc "delete generated files"
+desc 'delete generated files'
 task :clobber do
   sh 'rm -rf .yardoc'
   sh 'rm -rf doc'
 end
 
-desc "generate rdoc"
+desc 'generate rdoc'
 task :rdoc do
-  sh "yardoc"
+  sh 'yardoc'
 end
