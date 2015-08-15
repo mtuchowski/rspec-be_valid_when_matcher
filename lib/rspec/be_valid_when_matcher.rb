@@ -124,6 +124,12 @@ module RSpec
         is(nil, 'not present')
       end
 
+      def is_number(number = 42)
+        fail ArgumentError, 'should be number' unless number.is_a? Numeric
+
+        is(number, 'number')
+      end
+
       private
 
       attr_writer :message
