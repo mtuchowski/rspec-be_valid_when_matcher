@@ -141,40 +141,6 @@ describe 'be_valid_when' do
     end
   end
 
-  context '#is method' do
-    it 'should fail if no arguments given' do
-      expect { be_valid_when(:field).is }.to raise_error ArgumentError
-    end
-
-    context 'when given one argument' do
-      subject { be_valid_when(:field).is('value') }
-
-      it 'sets the field value' do
-        expect { subject.matches? model }.not_to raise_error
-        expect { subject.does_not_match? model }.not_to raise_error
-        expect { subject.description }.not_to raise_error
-      end
-    end
-
-    context 'when given two arguments' do
-      subject { be_valid_when(:field).is('value', 'some text') }
-
-      it 'sets the field value with the first argument' do
-        expect { subject.matches? model }.not_to raise_error
-        expect { subject.does_not_match? model }.not_to raise_error
-        expect { subject.description }.not_to raise_error
-      end
-
-      it 'sets the custom message with second argument' do
-        skip 'tested under failure message and description specs'
-      end
-    end
-
-    it 'should fail if more that two arguments given' do
-      expect { be_valid_when(:field).is('one', 'two', 'three') }.to raise_error ArgumentError
-    end
-  end
-
   context 'when asserting validity of model' do
     subject { be_valid_when :field }
 
@@ -205,87 +171,28 @@ describe 'be_valid_when' do
     end
   end
 
-  # Helper methods specs
-
-  context '#is_not_present method' do
-    # @private
-    class IsNotPresentTestModel
-      include ActiveModel::Validations
-
-      attr_accessor :nil_field
-      attr_accessor :not_nil_field
-
-      validates :nil_field, absence: true
-      validates :not_nil_field, presence: true
-    end
-
-    let(:model) { IsNotPresentTestModel.new }
-
-    let(:passing_matcher) { be_valid_when(:nil_field).is_not_present }
-    let(:failing_matcher) { be_valid_when(:not_nil_field).is_not_present }
-
-    let(:description) { /^be valid when #nil_field is not present \(nil\)$/ }
-
-    it 'has the correct description' do
-      expect(passing_matcher.description).to match description
-    end
-
-    it 'returns proper result' do
-      expect(passing_matcher.matches? model).to eq true
-      expect(passing_matcher.does_not_match? model).to eq false
-      expect(failing_matcher.matches? model).to eq false
-      expect(failing_matcher.does_not_match? model).to eq true
-    end
-  end
-
   # Message methods specs
 
   context 'failure message' do
-    context 'without custom message' do
-      subject { be_valid_when :field, 'value' }
+    subject { be_valid_when :field, 'value' }
 
-      let(:message_regex) do
-        /^expected #<.*> to be valid when #field is "value"$/
-      end
-
-      it 'provides subject model, field name and field value' do
-        subject.matches?(model)
-        expect(subject.failure_message).to match message_regex
-      end
-
-      context 'when negated' do
-        let(:negated_message_regex) do
-          /^expected #<.*> not to be valid when #field is "value"$/
-        end
-
-        it 'provides subject model, field name and field value' do
-          subject.does_not_match?(model)
-          expect(subject.failure_message_when_negated).to match negated_message_regex
-        end
-      end
+    let(:message_regex) do
+      /^expected #<.*> to be valid when #field is "value"$/
     end
 
-    context 'with custom message' do
-      subject { be_valid_when(:field).is('value', 'some text') }
+    it 'provides subject model, field name and field value' do
+      subject.matches?(model)
+      expect(subject.failure_message).to match message_regex
+    end
 
-      let(:message_regex) do
-        /^expected #<.*> to be valid when #field is some text \("value"\)$/
+    context 'when negated' do
+      let(:negated_message_regex) do
+        /^expected #<.*> not to be valid when #field is "value"$/
       end
 
       it 'provides subject model, field name and field value' do
-        subject.matches?(model)
-        expect(subject.failure_message).to match message_regex
-      end
-
-      context 'when negated' do
-        let(:negated_message_regex) do
-          /^expected #<.*> not to be valid when #field is some text \("value"\)$/
-        end
-
-        it 'provides subject model, field name and field value' do
-          subject.does_not_match?(model)
-          expect(subject.failure_message_when_negated).to match negated_message_regex
-        end
+        subject.does_not_match?(model)
+        expect(subject.failure_message_when_negated).to match negated_message_regex
       end
     end
   end
