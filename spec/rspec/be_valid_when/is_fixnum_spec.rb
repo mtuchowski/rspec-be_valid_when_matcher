@@ -9,16 +9,6 @@ class FakeModel
 
   validates_numericality_of :fixnum_field, greater_than: 40
   validates_length_of :not_fixnum_field, minimum: 31
-
-  validate :fixnum_field_should_be_a_fixnum
-
-  private
-
-  def fixnum_field_should_be_a_fixnum
-    return unless fixnum_field.present? && !(fixnum_field.is_a? Fixnum)
-
-    errors.add(:expiration_date, 'must be a Fixnum')
-  end
 end
 
 describe 'be_valid_when#is_fixnum' do
