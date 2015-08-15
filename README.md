@@ -86,6 +86,7 @@ Test field validity with specific type values:
 ```ruby
 be_valid_when(:field).is_number 2          # Defaults to 42
 be_valid_when(:field).is_fixnum 2          # Defaults to 42
+be_valid_when(:field).is_bignum 1024**32   # Defaults to 42**13
 ```
 
 ## MIT Licensed

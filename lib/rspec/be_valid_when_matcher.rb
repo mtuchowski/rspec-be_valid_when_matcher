@@ -138,6 +138,13 @@ module RSpec
         is(number, 'a fixnum')
       end
 
+      # Used to setup matcher for checking for bignum values.
+      def is_bignum(number = 42**13)
+        fail ArgumentError, 'should be a bignum' unless number.is_a? Bignum
+
+        is(number, 'a bignum')
+      end
+
       private
 
       attr_writer :message
