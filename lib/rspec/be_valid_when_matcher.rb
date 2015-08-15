@@ -131,6 +131,13 @@ module RSpec
         is(number, 'number')
       end
 
+      # Used to setup matcher for checking for fixnum values.
+      def is_fixnum(number = 42)
+        fail ArgumentError, 'should be a fixnum' unless number.is_a? Fixnum
+
+        is(number, 'a fixnum')
+      end
+
       private
 
       attr_writer :message
