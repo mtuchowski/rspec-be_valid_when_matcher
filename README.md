@@ -56,8 +56,8 @@ Failures:
      Failure/Error: it { is_expected.not_to be_valid_when :age, -1, 'negative number' }
 ```
 
-To keep the specs more readable `#is` method can be used to separate `field` and expected `value`
-and optional `message` declaration like so:
+To keep the specs more readable `#is(value, message)` method can be used to separate `field`
+from expected `value` and optional `message` declaration like so:
 
 ```ruby
 RSpec.describe Person do
@@ -73,8 +73,19 @@ end
 
 #### Presence
 
+Test field validity with the `nil` value:
+
 ```ruby
-  it { is_expected.to be_valid_when(:field).is_not_present } # Uses nil value.
+be_valid_when(:field).is_not_present     # Uses nil value
+```
+
+#### Type
+
+Test field validity with specific type values:
+
+```ruby
+be_valid_when(:field).is_number 2          # Defaults to 42
+be_valid_when(:field).is_fixnum 2          # Defaults to 42
 ```
 
 ## MIT Licensed
