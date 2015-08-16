@@ -152,6 +152,13 @@ module RSpec
         is(number, 'a float')
       end
 
+      # Used to setup matcher for checking for complex values.
+      def is_complex(number = 42.to_c)
+        fail ArgumentError, 'should be a complex' unless number.is_a? Complex
+
+        is(number, 'a complex')
+      end
+
       private
 
       attr_writer :message
@@ -178,7 +185,11 @@ module RSpec
       end
 
       def format_message
-        value = @value.inspect
+        if @value.is_a? Complex
+          value = @value.to_s
+        else
+          value = @value.inspect
+        end
         message = @message.nil? ? "is #{value}" : "is #{@message} (#{value})"
         "##{@field} #{message}"
       end
