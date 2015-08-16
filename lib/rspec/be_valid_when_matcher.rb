@@ -124,39 +124,17 @@ module RSpec
         is(nil, 'not present')
       end
 
-      # Used to setup matcher for checking for numeric values.
-      def is_number(number = 42)
-        fail ArgumentError, 'should be number' unless number.is_a? Numeric
+      # Generate #is_* numeric methods.
+      { number: { value: 42, type: Numeric },
+        fixnum: { value: 42, type: Fixnum },
+        bignum: { value: 42**13, type: Bignum },
+        float: { value: Math::PI, type: Float },
+        complex: { value: 42.to_c, type: Complex } }.each do |name, properties|
+        define_method "is_#{name}" do |number = properties[:value]|
+          fail ArgumentError, "should be #{name}" unless number.is_a? properties[:type]
 
-        is(number, 'a number')
-      end
-
-      # Used to setup matcher for checking for fixnum values.
-      def is_fixnum(number = 42)
-        fail ArgumentError, 'should be a fixnum' unless number.is_a? Fixnum
-
-        is(number, 'a fixnum')
-      end
-
-      # Used to setup matcher for checking for bignum values.
-      def is_bignum(number = 42**13)
-        fail ArgumentError, 'should be a bignum' unless number.is_a? Bignum
-
-        is(number, 'a bignum')
-      end
-
-      # Used to setup matcher for checking for float values.
-      def is_float(number = Math::PI)
-        fail ArgumentError, 'should be a float' unless number.is_a? Float
-
-        is(number, 'a float')
-      end
-
-      # Used to setup matcher for checking for complex values.
-      def is_complex(number = 42.to_c)
-        fail ArgumentError, 'should be a complex' unless number.is_a? Complex
-
-        is(number, 'a complex')
+          is(number, "a #{name}")
+        end
       end
 
       private
