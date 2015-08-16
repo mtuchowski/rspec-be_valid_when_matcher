@@ -8,7 +8,13 @@ class FakeModel
   attr_accessor :not_fixnum_field
 
   validates_numericality_of :fixnum_field, greater_than: 40
-  validates_length_of :not_fixnum_field, minimum: 31
+  validate :not_fixnum_field_cannot_be_fixnum
+
+  private
+
+  def not_fixnum_field_cannot_be_fixnum
+    errors.add(:not_fixnum_field, "can't be fixnum") if not_fixnum_field.is_a? Fixnum
+  end
 end
 
 describe 'be_valid_when#is_fixnum' do

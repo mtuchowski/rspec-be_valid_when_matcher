@@ -8,7 +8,13 @@ class FakeModel
   attr_accessor :not_bignum_field
 
   validates_numericality_of :bignum_field, greater_than: 30129469486639681537
-  validates_length_of :not_bignum_field, minimum: 31
+  validate :not_bignum_field_cannot_be_bignum
+
+  private
+
+  def not_bignum_field_cannot_be_bignum
+    errors.add(:not_bignum_field, "can't be bignum") if not_bignum_field.is_a? Bignum
+  end
 end
 
 describe 'be_valid_when#is_bignum' do
