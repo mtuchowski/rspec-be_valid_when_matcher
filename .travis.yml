@@ -1,0 +1,15 @@
+---
+language: ruby
+sudo: false
+rvm:
+  - 2.0.0
+  - 2.1
+  - 2.2
+  - ruby-head
+  - ree
+  - rbx
+script:
+  - bundle exec rake spec
+  - bundle exec rake lint:style
+  - bundle exec rake lint:maintainability
+...
