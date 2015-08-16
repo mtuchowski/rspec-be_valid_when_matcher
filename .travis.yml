@@ -19,6 +19,7 @@ matrix:
     - rvm: jruby-head
       env: JRUBY_OPTS='--server -Xcompile.invokedynamic=false'
   allow_failures:
+    - rvm: rbx-2
     - rvm: jruby
     - rvm: jruby-head
     - rvm: ruby-head
