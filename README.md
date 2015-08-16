@@ -5,6 +5,13 @@
 
 RSpec matcher for testing ActiveRecord models with a fluent and clear language.
 
+```ruby
+expect(person).to be_valid_when(:age).is_number
+```
+
+The matcher will check only the specified field for validation errors, so if there's one buggy
+validator the whole model spec suite won't go red.
+
 ## Install
 
 First, add to your `Gemfile` (preferably in the `:test` group):
@@ -37,9 +44,21 @@ end
 
 ## Basic usage
 
-Here's an example using rspec-be_valid_when_matcher:
+Here's an example using `be_valid_when` matcher:
 
 ```ruby
+require 'active_model'
+
+class Person
+  include ActiveModel::Validations
+
+  attr_accessor :name
+  attr_accessor :age
+
+  validates_presence_of :name
+  validates_numericality_of :age, greater_than: 0
+end
+
 RSpec.describe Person do
   subject { Person.new }
 
@@ -72,28 +91,31 @@ RSpec.describe Person do
 end
 ```
 
-### Built-in checks
+## Built-in checks
 
-#### Presence
+In addition to standard matcher declaration interface and the `#is` method, there is also a number
+of helper methods to test common cases.
+
+### Presence
 
 Test field validity with the `nil` value:
 
 ```ruby
-be_valid_when(:field).is_not_present     # Uses nil value
+be_valid_when(:field).is_not_present
 ```
 
-#### Type
+### Type
 
-Test field validity with specific type values:
+Test field validity with specific type values (all methods accept field value argument):
 
 ```ruby
-be_valid_when(:field).is_number 2          # Defaults to 42
-be_valid_when(:field).is_fixnum 2          # Defaults to 42
-be_valid_when(:field).is_bignum 1024**32   # Defaults to 42**13
-be_valid_when(:field).is_float 0.1         # Defaults to 3.14
-be_valid_when(:field).is_complex 2.to_c    # Defaults to 42+0i
-be_valid_when(:field).is_rational 2.to_r   # Defaults to 42/1
-be_valid_when(:field).is_bigdecimal BigDecimal('2') # Defaults to 0.42E2
+be_valid_when(:field).is_number     # Defaults to 42
+be_valid_when(:field).is_fixnum     # Defaults to 42
+be_valid_when(:field).is_bignum     # Defaults to 42**13
+be_valid_when(:field).is_float      # Defaults to 3.14
+be_valid_when(:field).is_complex    # Defaults to 42+0i
+be_valid_when(:field).is_rational   # Defaults to 42/1
+be_valid_when(:field).is_bigdecimal # Defaults to 0.42E2
 ```
 
 ## MIT Licensed
