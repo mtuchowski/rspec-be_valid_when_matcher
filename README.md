@@ -93,6 +93,7 @@ be_valid_when(:field).is_bignum 1024**32   # Defaults to 42**13
 be_valid_when(:field).is_float 0.1         # Defaults to 3.14
 be_valid_when(:field).is_complex 2.to_c    # Defaults to 42+0i
 be_valid_when(:field).is_rational 2.to_r   # Defaults to 42/1
+be_valid_when(:field).is_bigdecimal BigDecimal('2') # Defaults to 0.42E2
 ```
 
 ## MIT Licensed

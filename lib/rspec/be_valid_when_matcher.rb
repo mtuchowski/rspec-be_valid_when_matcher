@@ -1,5 +1,6 @@
 # encoding: UTF-8
 require 'rspec'
+require 'bigdecimal'
 
 # RSpec's top level namespace.
 module RSpec
@@ -130,7 +131,8 @@ module RSpec
         bignum: { value: 42**13, type: Bignum },
         float: { value: Math::PI, type: Float },
         complex: { value: 42.to_c, type: Complex },
-        rational: { value: 42.to_r, type: Rational } }.each do |name, properties|
+        rational: { value: 42.to_r, type: Rational },
+        bigdecimal: { value: BigDecimal.new('42'), type: BigDecimal } }.each do |name, properties|
         define_method "is_#{name}" do |number = properties[:value]|
           fail ArgumentError, "should be #{name}" unless number.is_a? properties[:type]
 
@@ -170,7 +172,7 @@ module RSpec
       end
 
       def value_to_string
-        if [Complex, Rational].any? { |type| @value.is_a? type }
+        if [Complex, Rational, BigDecimal].any? { |type| @value.is_a? type }
           @value.to_s
         else
           @value.inspect
