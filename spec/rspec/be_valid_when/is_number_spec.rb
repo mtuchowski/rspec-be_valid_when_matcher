@@ -15,7 +15,7 @@ describe 'be_valid_when#is_number' do
   let(:model) { FakeModel.new }
 
   context 'with no arguments' do
-    let(:description) { /^be valid when #number_field is number \(42\)$/ }
+    let(:description) { /^be valid when #number_field is a number \(42\)$/ }
 
     let(:passing_matcher) { be_valid_when(:number_field).is_number }
     let(:failing_matcher) { be_valid_when(:not_number_field).is_number }
@@ -33,7 +33,7 @@ describe 'be_valid_when#is_number' do
   end
 
   context 'with one argument' do
-    let(:description) { /^be valid when #number_field is number \(50\)$/ }
+    let(:description) { /^be valid when #number_field is a number \(50\)$/ }
 
     let(:passing_matcher) { be_valid_when(:number_field).is_number 50 }
     let(:failing_matcher) { be_valid_when(:number_field).is_number 30 }
