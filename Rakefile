@@ -9,14 +9,14 @@ end
 
 namespace :lint do
   RuboCop::RakeTask.new('style') do |task|
-    task.options       = ['-cconfig/rubocop.yml']
-    task.fail_on_error = false
+    task.options       = ['-c', 'config/rubocop.yml']
+    task.fail_on_error = true
   end
 
   Reek::Rake::Task.new('maintainability') do |task|
     task.config_file   = 'config/reek.yml'
     task.source_files  = '**/*.rb'
-    task.fail_on_error = false
+    task.fail_on_error = true
   end
 
   desc 'Check markdown files style'
