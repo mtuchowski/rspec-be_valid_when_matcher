@@ -145,6 +145,13 @@ module RSpec
         is(number, 'a bignum')
       end
 
+      # Used to setup matcher for checking for float values.
+      def is_float(number = Math::PI)
+        fail ArgumentError, 'should be a float' unless number.is_a? Float
+
+        is(number, 'a float')
+      end
+
       private
 
       attr_writer :message
