@@ -120,6 +120,7 @@ be_valid_when(:field).is_rational   # Defaults to 42/1
 be_valid_when(:field).is_bigdecimal # Defaults to 0.42E2
 be_valid_when(:field).is_string     # Defaults to 'value'
 be_valid_when(:field).is_regexp     # Defaults to /^value$/
+be_valid_when(:field).is_array      # Defaults to [42]
 ```
 
 ## MIT Licensed

@@ -152,6 +152,12 @@ module RSpec
         is(value, 'a regexp')
       end
 
+      def is_array(value = [42])
+        fail ArgumentError, 'should be array' unless value.is_a? Array
+
+        is(value, 'a array')
+      end
+
       private
 
       attr_writer :message
