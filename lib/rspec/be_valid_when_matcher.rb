@@ -146,6 +146,12 @@ module RSpec
         is(value, 'a string')
       end
 
+      def is_regexp(value = /^value$/)
+        fail ArgumentError, 'should be regexp' unless value.is_a? Regexp
+
+        is(value, 'a regexp')
+      end
+
       private
 
       attr_writer :message
