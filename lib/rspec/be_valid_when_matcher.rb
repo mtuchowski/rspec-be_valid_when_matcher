@@ -140,6 +140,12 @@ module RSpec
         end
       end
 
+      def is_string(value = 'value')
+        fail ArgumentError, 'should be string' unless value.is_a? String
+
+        is(value, 'a string')
+      end
+
       private
 
       attr_writer :message
