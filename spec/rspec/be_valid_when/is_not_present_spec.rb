@@ -29,4 +29,8 @@ describe 'be_valid_when#is_not_present' do
     expect(failing_matcher.matches? model).to eq false
     expect(failing_matcher.does_not_match? model).to eq true
   end
+
+  it 'does not accept any arguments' do
+    expect { be_valid_when(:field).is_not_present 'value' }.to raise_error ArgumentError
+  end
 end
