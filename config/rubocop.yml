@@ -6,6 +6,9 @@ AllCops:
 Metrics/LineLength:
   Max: 99
 
+Metrics/ClassLength:
+  Max: 200
+
 Style/NumericLiterals:
   Enabled: false
 ...
