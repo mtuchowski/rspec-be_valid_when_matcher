@@ -125,43 +125,24 @@ module RSpec
         is(nil, 'not present')
       end
 
-      # Generate #is_* numeric methods.
+      # Generate #is_*(type) methods.
       { number: { value: 42, type: Numeric },
         fixnum: { value: 42, type: Fixnum },
         bignum: { value: 42**13, type: Bignum },
         float: { value: Math::PI, type: Float },
         complex: { value: 42.to_c, type: Complex },
         rational: { value: 42.to_r, type: Rational },
-        bigdecimal: { value: BigDecimal.new('42'), type: BigDecimal } }.each do |name, properties|
-        define_method "is_#{name}" do |number = properties[:value]|
-          fail ArgumentError, "should be #{name}" unless number.is_a? properties[:type]
+        bigdecimal: { value: BigDecimal.new('42'), type: BigDecimal },
+        string: { value: 'value', type: String },
+        regexp: { value: /^value$/, type: Regexp },
+        array: { value: [42], type: Array },
+        hash: { value: { value: 42 }, type: Hash },
+        symbol: { value: :value, type: Symbol } }.each do |name, properties|
+        define_method "is_#{name}" do |value = properties[:value]|
+          fail ArgumentError, "should be #{name}" unless value.is_a? properties[:type]
 
-          is(number, "a #{name}")
+          is(value, "a #{name}")
         end
-      end
-
-      def is_string(value = 'value')
-        fail ArgumentError, 'should be string' unless value.is_a? String
-
-        is(value, 'a string')
-      end
-
-      def is_regexp(value = /^value$/)
-        fail ArgumentError, 'should be regexp' unless value.is_a? Regexp
-
-        is(value, 'a regexp')
-      end
-
-      def is_array(value = [42])
-        fail ArgumentError, 'should be array' unless value.is_a? Array
-
-        is(value, 'a array')
-      end
-
-      def is_hash(value = { value: 42 })
-        fail ArgumentError, 'should be hash' unless value.is_a? Hash
-
-        is(value, 'a hash')
       end
 
       private

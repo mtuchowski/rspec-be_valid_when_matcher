@@ -122,6 +122,7 @@ be_valid_when(:field).is_string     # Defaults to 'value'
 be_valid_when(:field).is_regexp     # Defaults to /^value$/
 be_valid_when(:field).is_array      # Defaults to [42]
 be_valid_when(:field).is_hash       # Defaults to { value: 42 }
+be_valid_when(:field).is_symbol     # Defaults to :value
 ```
 
 ## MIT Licensed
