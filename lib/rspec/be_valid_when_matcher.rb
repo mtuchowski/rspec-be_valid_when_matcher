@@ -158,6 +158,12 @@ module RSpec
         is(value, 'a array')
       end
 
+      def is_hash(value = { value: 42 })
+        fail ArgumentError, 'should be hash' unless value.is_a? Hash
+
+        is(value, 'a hash')
+      end
+
       private
 
       attr_writer :message
