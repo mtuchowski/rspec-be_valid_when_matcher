@@ -15,7 +15,7 @@ namespace :lint do
 
   Reek::Rake::Task.new('maintainability') do |task|
     task.config_file   = 'config/reek.yml'
-    task.source_files  = '**/*.rb'
+    task.source_files  = 'lib/**/*.rb'
     task.fail_on_error = true
   end
 
