@@ -50,7 +50,7 @@ describe 'be_valid_when#is_hash' do
   context 'with one argument' do
     let(:description) { /^be valid when #hash_field is a hash \({:a=>1\}\)$/ }
 
-    let(:passing_matcher) { be_valid_when(:hash_field).is_hash({ a: 1 }) }
+    let(:passing_matcher) { be_valid_when(:hash_field).is_hash(a: 1) }
     let(:failing_matcher) { be_valid_when(:hash_field).is_hash({}) }
 
     it 'has the correct description' do
