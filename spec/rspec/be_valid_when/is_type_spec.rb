@@ -88,13 +88,21 @@ describe 'be_valid_when' do
   context '#is_integer' do
   end
 
+  def invalid_values_for(type_name)
+    { integer: 42, bignum: 42**42, float: 3.14, complex: 42.to_c, rational: 42.to_r,
+      bigdecimal: BigDecimal.new('42'), string: 'value', regexp: /^value$/, array: [1, 2],
+      hash: {}, symbol: :value
+    }.reject { |key| key == type_name }
+  end
+
   {
     fixnum: {
       argument: { passing: 50, failing: 30 },
       description: {
         no_arguments: /^be valid when #fixnum_field is a fixnum \(42\)$/,
         one_argument: /^be valid when #fixnum_field is a fixnum \(50\)$/
-      }
+      },
+      treat_as: :integer
     },
     bignum: {
       argument: { passing: 2232232135326160725639168, failing: 30129469486639681536 },
@@ -197,6 +205,14 @@ describe 'be_valid_when' do
         include_examples 'has correct description' do
           let(:matcher) { passing_matcher }
           let(:description) { props[:description][:one_argument] }
+        end
+
+        it "should fail if passed non #{name}" do
+          invalid_values_for(props[:treat_as] ? props[:treat_as] : name.to_sym).each do |_, value|
+            expect do
+              be_valid_when(field_name).send(method_name, value)
+            end.to raise_error ArgumentError
+          end
         end
       end
     end
