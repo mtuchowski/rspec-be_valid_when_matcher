@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name             = 'rspec-be_valid_when_matcher'
-  s.version          = '0.3.0'
+  s.version          = '1.0.0'
 
   s.author           = 'Marek Tuchowski'
   s.email            = 'marek@tuchowski.com.pl'
@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.files            = Dir.glob('lib/**/*')
   s.test_files       = Dir.glob('{spec}/**/*')
   s.require_paths    = ['lib']
+
+  s.required_ruby_version = '>= 2.0.0'
 
   s.add_dependency 'rspec', '~> 3'
   s.add_dependency 'activemodel', '~> 4'
