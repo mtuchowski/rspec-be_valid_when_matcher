@@ -111,7 +111,7 @@ be_valid_when(:field).is_not_present
 Test field validity with specific type values (all methods accept field value argument):
 
 ```ruby
-be_valid_when(:field).is_number     # Defaults to 42
+be_valid_when(:field).is_numeric    # Defaults to 42
 be_valid_when(:field).is_fixnum     # Defaults to 42
 be_valid_when(:field).is_bignum     # Defaults to 42**13
 be_valid_when(:field).is_float      # Defaults to 3.14

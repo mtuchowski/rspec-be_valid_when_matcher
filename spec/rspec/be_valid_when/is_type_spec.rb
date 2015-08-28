@@ -59,32 +59,6 @@ end
 describe 'be_valid_when' do
   let(:model) { FakeModelFoo.new }
 
-  context '#is_number' do
-    context 'with no arguments' do
-      let(:passing_matcher) { be_valid_when(:numeric_field).is_number }
-      let(:failing_matcher) { be_valid_when(:not_numeric_field).is_number }
-
-      include_examples 'returns proper results'
-
-      include_examples 'has correct description' do
-        let(:matcher) { passing_matcher }
-        let(:description) { /^be valid when #numeric_field is a number \(42\)$/ }
-      end
-    end
-
-    context 'with one argument' do
-      let(:passing_matcher) { be_valid_when(:numeric_field).is_number 50 }
-      let(:failing_matcher) { be_valid_when(:numeric_field).is_number 30 }
-
-      include_examples 'returns proper results'
-
-      include_examples 'has correct description' do
-        let(:matcher) { passing_matcher }
-        let(:description) { /^be valid when #numeric_field is a number \(50\)$/ }
-      end
-    end
-  end
-
   context '#is_integer' do
   end
 
@@ -92,12 +66,26 @@ describe 'be_valid_when' do
     { integer: 42, bignum: 42**42, float: 3.14, complex: 42.to_c, rational: 42.to_r,
       bigdecimal: BigDecimal.new('42'), string: 'value', regexp: /^value$/, array: [1, 2],
       hash: {}, symbol: :value
-    }.reject { |key| key == type_name }
+    }.reject do |key|
+      if type_name.is_a? Symbol
+        key == type_name
+      else
+        type_name.include? key
+      end
+    end
   end
 
   {
+    numeric: {
+      argument: { passing: 50, failing: 40 },
+      description: {
+        no_arguments: /^be valid when #numeric_field is a numeric \(42\)$/,
+        one_argument: /^be valid when #numeric_field is a numeric \(50\)$/
+      },
+      treat_as: [:integer, :bignum, :float, :complex, :rational, :bigdecimal]
+    },
     fixnum: {
-      argument: { passing: 50, failing: 30 },
+      argument: { passing: 50, failing: 40 },
       description: {
         no_arguments: /^be valid when #fixnum_field is a fixnum \(42\)$/,
         one_argument: /^be valid when #fixnum_field is a fixnum \(50\)$/

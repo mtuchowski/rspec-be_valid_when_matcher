@@ -126,7 +126,7 @@ module RSpec
       end
 
       # Generate #is_*(type) methods.
-      { number:     { value: 42, type: Numeric },
+      { numeric:    { value: 42, type: Numeric },
         fixnum:     { value: 42, type: Fixnum },
         bignum:     { value: 42**13, type: Bignum },
         float:      { value: Math::PI, type: Float },
