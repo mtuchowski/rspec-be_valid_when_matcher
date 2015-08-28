@@ -8,7 +8,7 @@
 RSpec matcher for testing ActiveRecord models with a fluent and clear language.
 
 ```ruby
-expect(person).to be_valid_when(:age).is_number
+expect(person).to be_valid_when(:age).is_numeric
 ```
 
 The matcher will check only the specified field for validation errors, so if there's one buggy
