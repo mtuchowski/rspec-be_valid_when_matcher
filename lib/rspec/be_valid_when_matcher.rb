@@ -126,18 +126,18 @@ module RSpec
       end
 
       # Generate #is_*(type) methods.
-      { number: { value: 42, type: Numeric },
-        fixnum: { value: 42, type: Fixnum },
-        bignum: { value: 42**13, type: Bignum },
-        float: { value: Math::PI, type: Float },
-        complex: { value: 42.to_c, type: Complex },
-        rational: { value: 42.to_r, type: Rational },
+      { number:     { value: 42, type: Numeric },
+        fixnum:     { value: 42, type: Fixnum },
+        bignum:     { value: 42**13, type: Bignum },
+        float:      { value: Math::PI, type: Float },
+        complex:    { value: 42.to_c, type: Complex },
+        rational:   { value: 42.to_r, type: Rational },
         bigdecimal: { value: BigDecimal.new('42'), type: BigDecimal },
-        string: { value: 'value', type: String },
-        regexp: { value: /^value$/, type: Regexp },
-        array: { value: [42], type: Array },
-        hash: { value: { value: 42 }, type: Hash },
-        symbol: { value: :value, type: Symbol } }.each do |name, properties|
+        string:     { value: 'value', type: String },
+        regexp:     { value: /^value$/, type: Regexp },
+        array:      { value: [42], type: Array },
+        hash:       { value: { value: 42 }, type: Hash },
+        symbol:     { value: :value, type: Symbol } }.each do |name, properties|
         define_method "is_#{name}" do |value = properties[:value]|
           fail ArgumentError, "should be #{name}" unless value.is_a? properties[:type]
 
