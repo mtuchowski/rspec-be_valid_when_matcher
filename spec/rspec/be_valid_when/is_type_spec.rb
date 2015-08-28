@@ -59,9 +59,6 @@ end
 describe 'be_valid_when' do
   let(:model) { FakeModelFoo.new }
 
-  context '#is_integer' do
-  end
-
   def invalid_values_for(type_name)
     { integer: 42, bignum: 42**42, float: 3.14, complex: 42.to_c, rational: 42.to_r,
       bigdecimal: BigDecimal.new('42'), string: 'value', regexp: /^value$/, array: [1, 2],
@@ -83,6 +80,14 @@ describe 'be_valid_when' do
         one_argument: /^be valid when #numeric_field is a numeric \(50\)$/
       },
       treat_as: [:integer, :bignum, :float, :complex, :rational, :bigdecimal]
+    },
+    integer: {
+      argument: { passing: 50, failing: 40 },
+      description: {
+        no_arguments: /^be valid when #integer_field is a integer \(42\)$/,
+        one_argument: /^be valid when #integer_field is a integer \(50\)$/
+      },
+      treat_as: [:integer, :bignum]
     },
     fixnum: {
       argument: { passing: 50, failing: 40 },
