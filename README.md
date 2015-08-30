@@ -1,9 +1,11 @@
 # rspec-be_valid_when_matcher
 
-[![Gem Version](https://badge.fury.io/rb/rspec-be_valid_when_matcher.svg)]
-(http://badge.fury.io/rb/rspec-be_valid_when_matcher)
-[![Build Status](https://travis-ci.org/mtuchowski/rspec-be_valid_when_matcher.svg)]
-(https://travis-ci.org/mtuchowski/rspec-be_valid_when_matcher)
+[![Gem Version](https://badge.fury.io/rb/rspec-be_valid_when_matcher.svg)](
+http://badge.fury.io/rb/rspec-be_valid_when_matcher)
+[![Build Status](https://travis-ci.org/mtuchowski/rspec-be_valid_when_matcher.svg)](
+https://travis-ci.org/mtuchowski/rspec-be_valid_when_matcher)
+[![Code Climate](https://codeclimate.com/github/mtuchowski/rspec-be_valid_when_matcher/badges/gpa.svg)](
+https://codeclimate.com/github/mtuchowski/rspec-be_valid_when_matcher)
 
 RSpec matcher for testing ActiveRecord models with a fluent and clear language.
 
