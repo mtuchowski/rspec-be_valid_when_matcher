@@ -12,6 +12,12 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+# Setup Code Climate test reporter.
+require 'codeclimate-test-reporter'
+
+CodeClimate::TestReporter.start
+
+# Allow using 'be_valid_when' everywhere.
 require 'rspec/be_valid_when_matcher'
 
 RSpec.configure do |config|
