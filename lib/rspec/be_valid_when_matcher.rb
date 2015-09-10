@@ -6,8 +6,6 @@ require 'bigdecimal'
 module RSpec
   # Container module for be_valid_when matcher definition and implementation.
   module BeValidWhenMatcher
-    # rubocop:disable Style/PredicateName
-
     # Provides the implementation for `be_valid_when` matcher.
     # Not intended to be instantiated directly.
     # @api private
@@ -32,7 +30,6 @@ module RSpec
       # {http://api.rubyonrails.org/classes/ActiveModel/Validations.html#method-i-errors `errors`}
       # on specified `field` after setting it's `value` and validating it. Does not take into
       # account other fields and the validity of the whole object.
-      # @api private
       # @param model [Object] an Object implementing `ActiveModel::Validations`.
       # @return [Boolean] `true` if there are no errors on `field`, `false` otherwise.
       def matches?(model)
@@ -46,7 +43,6 @@ module RSpec
       # {http://api.rubyonrails.org/classes/ActiveModel/Validations.html#method-i-errors `errors`}
       # on specified `field` after setting it's `value` and validating it. Does not take into
       # account other fields.
-      # @api private
       # @param model [Object] an Object implementing `ActiveModel::Validations`.
       # @return [Boolean] `true` if there are errors on `field`, `false` otherwise.
       def does_not_match?(model)
@@ -55,7 +51,6 @@ module RSpec
       end
 
       # Called when {#matches?} returns false.
-      # @api private
       # @return [String] explaining what was expected.
       def failure_message
         assert_value_existence
@@ -65,7 +60,6 @@ module RSpec
       end
 
       # Called when {#does_not_match?} returns false.
-      # @api private
       # @return [String] explaining what was expected.
       def failure_message_when_negated
         assert_value_existence
@@ -75,7 +69,6 @@ module RSpec
       end
 
       # Used to generate the example's doc string in one-liner syntax.
-      # @api private
       # @return [String] short description of what is expected.
       def description
         assert_value_existence
@@ -84,29 +77,18 @@ module RSpec
       end
 
       # Indicates that this matcher doesn't provide actual and expected attributes.
-      # @api private
       # @return [FalseClass]
       def diffable?
         false
       end
 
       # Indicates that this matcher cannot be used in a block expectation expression.
-      # @api private
       # @return [FalseClass]
       def supports_block_expectations?
         false
       end
 
-      # Used to set field `value` and optional custom failure `message`.
-      # @overload is(value)
-      #   Sets the field `value`.
-      #   @param value [Any] field `value` to use in matching.
-      # @overload is(value, message)
-      #   Sets the field `value` and custom failure `message`.
-      #   @param value [Any] field `value` to use in matching.
-      #   @param message [String] a `message` used for {#failure_message},
-      #   {#failure_message_when_negated} and {#description}.
-      # @return [self]
+      # @see BeValidWhenMatcher#is
       def is(*args)
         number_of_arguments = args.size
 
@@ -120,7 +102,8 @@ module RSpec
         self
       end
 
-      # Used to setup matcher for checking `nil` `value`.
+      # rubocop:disable Style/PredicateName
+      # @see BeValidWhenMatcher#is_not_present
       def is_not_present
         is(nil, 'not present')
       end
@@ -187,6 +170,22 @@ module RSpec
     end
 
     # Model validity assertion.
+    #
+    # @overload be_valid_when(field)
+    #   @param field (Symbol) field name to use.
+    #
+    # @overload be_valid_when(field, value)
+    #   @param field (Symbol) field name to use.
+    #   @param value (Any) field `value` to use in matching.
+    #
+    # @overload be_valid_when(field, value, message)
+    #   @param field (Symbol) field name to use.
+    #   @param value (Any) field `value` to use in matching.
+    #   @param message [String] a `message` used for failure message.
+    #
+    # @raise [ArgumentError] if field name is not a symbol.
+    # @raise [ArgumentError] if invoked with more than three parameters.
+    # @return [self]
     def be_valid_when(*args)
       number_of_arguments = args.size
       field_name = args.shift
@@ -197,5 +196,134 @@ module RSpec
         BeValidWhen.new(field_name).is(*args)
       end
     end
+
+    # @!group Basic chaining
+
+    # @!method is(*args)
+    #   Used to set field `value` and optional custom failure `message`.
+    #
+    #   @overload is(value)
+    #     Sets the field `value`.
+    #     @param value [Any] field `value` to use in matching.
+    #     @example
+    #       it { is_expected.to be_valid_when(:field).is(true) }
+    #
+    #   @overload is(value, message)
+    #     Sets the field `value` and custom failure `message`.
+    #     @param value [Any] field `value` to use in matching.
+    #     @param message [String] a `message` used for failure message.
+    #     @example
+    #       it { is_expected.to be_valid_when(:field).is(42, 'magic number') }
+    #
+    #   @raise [ArgumentError] if invoked without passing `value` parameter.
+    #   @raise [ArgumentError] if invoked with more than two parameters.
+    #   @return [self]
+
+    # @!endgroup
+
+    # @!group Presence
+
+    # @!method is_not_present()
+    #   Used to setup matcher for checking `nil` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_not_present }
+    #   @return [self]
+
+    # @!endgroup
+
+    # @!group Type
+
+    # @!method is_numeric(value = 42)
+    #   Setup matcher for checking numeric values.
+    #   @raise [ArgumentError] if given non `Numeric` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_numeric }
+    #   @return [self]
+
+    # @!method is_integer(value = 42)
+    #   Setup matcher for checking integer values.
+    #   @raise [ArgumentError] if given non `Integer` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_integer }
+    #   @return [self]
+
+    # @!method is_fixnum(value = 42)
+    #   Setup matcher for checking fixnum values.
+    #   @raise [ArgumentError] if given non `Fixnum` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_fixnum }
+    #   @return [self]
+
+    # @!method is_bignum(value = 42**13)
+    #   Setup matcher for checking bignum values.
+    #   @raise [ArgumentError] if given non `Bignum` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_bignum }
+    #   @return [self]
+
+    # @!method is_float(value = 3.14)
+    #   Setup matcher for checking float values.
+    #   @raise [ArgumentError] if given non `Float` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_float }
+    #   @return [self]
+
+    # @!method is_complex(value = 42+0i)
+    #   Setup matcher for checking complex values.
+    #   @raise [ArgumentError] if given non `Complex` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_complex }
+    #   @return [self]
+
+    # @!method is_rational(value = 42/1)
+    #   Setup matcher for checking rational values.
+    #   @raise [ArgumentError] if given non `Rational` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_rational }
+    #   @return [self]
+
+    # @!method is_bigdecimal(value = 0.42E2)
+    #   Setup matcher for checking bigdecimal values.
+    #   @raise [ArgumentError] if given non `BigDecimal` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_bigdecimal }
+    #   @return [self]
+
+    # @!method is_string(value = 'value')
+    #   Setup matcher for checking string values.
+    #   @raise [ArgumentError] if given non `String` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_string }
+    #   @return [self]
+
+    # @!method is_regexp(value = /^value$/)
+    #   Setup matcher for checking regexp values.
+    #   @raise [ArgumentError] if given non `Regexp` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_regexp }
+    #   @return [self]
+
+    # @!method is_array(value = [42])
+    #   Setup matcher for checking array values.
+    #   @raise [ArgumentError] if given non `Array` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_array }
+    #   @return [self]
+
+    # @!method is_hash(value = { value: 42 })
+    #   Setup matcher for checking hash values.
+    #   @raise [ArgumentError] if given non `Hash` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_hash }
+    #   @return [self]
+
+    # @!method is_symbol(value = :value)
+    #   Setup matcher for checking symbol values.
+    #   @raise [ArgumentError] if given non `Symbol` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_symbol }
+    #   @return [self]
+
+    # @!endgroup
   end
 end
