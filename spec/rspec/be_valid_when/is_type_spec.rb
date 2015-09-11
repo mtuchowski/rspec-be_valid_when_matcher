@@ -7,7 +7,7 @@ class FakeModelFoo
   include ActiveModel::Validations
 
   [Numeric, Integer, Fixnum, Bignum, Float, Complex, Rational, BigDecimal,
-   String, Regexp, Array, Hash, Symbol].each do |type|
+   String, Regexp, Array, Hash, Symbol, TrueClass, FalseClass].each do |type|
     type_name      = type.name.downcase
     field_name     = "#{type_name}_field"
     not_field_name = "not_#{field_name}"
@@ -38,6 +38,8 @@ class FakeModelFoo
   validate :array_field_cannot_be_empty
   validate :hash_field_cannot_be_empty
   validate :symbol_field_cannot_be_short
+  validate :trueclass_field_cannot_be_false
+  validate :falseclass_field_cannot_be_true
 
   def regexp_field_cannot_be_empty
     errors.add(:regexp_field, "can't be empty") if regexp_field.inspect.length < 3
@@ -53,6 +55,14 @@ class FakeModelFoo
 
   def symbol_field_cannot_be_short
     errors.add(:symbol_field, "can't be short") if !symbol_field.nil? && symbol_field.length < 2
+  end
+
+  def trueclass_field_cannot_be_false
+    errors.add(:trueclass_field, "can't be false") if trueclass_field == false
+  end
+
+  def falseclass_field_cannot_be_true
+    errors.add(:falseclass_field, "can't be true") if falseclass_field == true
   end
 end
 
@@ -208,6 +218,30 @@ describe 'be_valid_when' do
           end
         end
       end
+    end
+  end
+
+  context '#is_true' do
+    let(:passing_matcher) { be_valid_when(:trueclass_field).is_true }
+    let(:failing_matcher) { be_valid_when(:not_trueclass_field).is_true }
+
+    include_examples 'returns proper results'
+
+    include_examples 'has correct description' do
+      let(:matcher) { passing_matcher }
+      let(:description) { /^be valid when #trueclass_field is true \(true\)$/ }
+    end
+  end
+
+  context '#is_false' do
+    let(:passing_matcher) { be_valid_when(:falseclass_field).is_false }
+    let(:failing_matcher) { be_valid_when(:not_falseclass_field).is_false }
+
+    include_examples 'returns proper results'
+
+    include_examples 'has correct description' do
+      let(:matcher) { passing_matcher }
+      let(:description) { /^be valid when #falseclass_field is false \(false\)$/ }
     end
   end
 end

@@ -129,6 +129,16 @@ module RSpec
         end
       end
 
+      # @see BeValidWhenMatcher#is_true
+      def is_true
+        is(true, 'true')
+      end
+
+      # @see BeValidWhenMatcher#is_false
+      def is_false
+        is(false, 'false')
+      end
+
       private
 
       attr_writer :message
@@ -322,6 +332,22 @@ module RSpec
     #   @raise [ArgumentError] if given non `Symbol` value.
     #   @example
     #     it { is_expected.to be_valid_when(:field).is_symbol }
+    #   @return [self]
+
+    # @!endgroup
+
+    # @!group Logical value
+
+    # @!method is_true()
+    #   Check validity of field with `TrueClass` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_true }
+    #   @return [self]
+
+    # @!method is_false()
+    #   Check validity of field with `FalseClass` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_false }
     #   @return [self]
 
     # @!endgroup

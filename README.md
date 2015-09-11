@@ -132,6 +132,13 @@ be_valid_when(:field).is_hash       # Defaults to { value: 42 }
 be_valid_when(:field).is_symbol     # Defaults to :value
 ```
 
+### Boolean values
+
+```ruby
+be_valid_when(:field).is_true
+be_valid_when(:field).is_false
+```
+
 ## MIT Licensed
 
 See [LICENSE](https://github.com/mtuchowski/rspec-be_valid_when_matcher/blob/master/LICENSE) file
