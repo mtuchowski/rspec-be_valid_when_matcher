@@ -10,6 +10,8 @@ https://codeclimate.com/github/mtuchowski/rspec-be_valid_when_matcher)
 https://codeclimate.com/github/mtuchowski/rspec-be_valid_when_matcher/coverage)
 [![Inline docs](http://inch-ci.org/github/mtuchowski/rspec-be_valid_when_matcher.svg?branch=master)](
 http://inch-ci.org/github/mtuchowski/rspec-be_valid_when_matcher)
+[![Dependency Status](https://gemnasium.com/mtuchowski/rspec-be_valid_when_matcher.svg)](
+https://gemnasium.com/mtuchowski/rspec-be_valid_when_matcher)
 
 RSpec matcher for testing ActiveRecord models with a fluent and clear language.
 
