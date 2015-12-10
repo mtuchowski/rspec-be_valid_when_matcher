@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name             = 'rspec-be_valid_when_matcher'
-  s.version          = '1.1.0'
+  s.version          = '1.2.0'
 
   s.author           = 'Marek Tuchowski'
   s.email            = 'marek@tuchowski.com.pl'

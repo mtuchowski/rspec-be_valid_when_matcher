@@ -121,7 +121,8 @@ module RSpec
         regexp:     { value: /^value$/, type: Regexp },
         array:      { value: [42], type: Array },
         hash:       { value: { value: 42 }, type: Hash },
-        symbol:     { value: :value, type: Symbol } }.each do |name, properties|
+        symbol:     { value: :value, type: Symbol },
+        range:      { value: 2..42, type: Range } }.each do |name, properties|
         define_method "is_#{name}" do |value = properties[:value]|
           fail ArgumentError, "should be #{name}" unless value.is_a? properties[:type]
 
@@ -332,6 +333,13 @@ module RSpec
     #   @raise [ArgumentError] if given non `Symbol` value.
     #   @example
     #     it { is_expected.to be_valid_when(:field).is_symbol }
+    #   @return [self]
+
+    # @!method is_range(value = 2..42)
+    #   Setup matcher for checking range values.
+    #   @raise [ArgumentError] if given non `Range` value.
+    #   @example
+    #     it { is_expected.to be_valid_when(:field).is_range }
     #   @return [self]
 
     # @!endgroup

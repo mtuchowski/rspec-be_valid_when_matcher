@@ -7,7 +7,7 @@ class FakeModelFoo
   include ActiveModel::Validations
 
   [Numeric, Integer, Fixnum, Bignum, Float, Complex, Rational, BigDecimal,
-   String, Regexp, Array, Hash, Symbol, TrueClass, FalseClass].each do |type|
+   String, Regexp, Array, Hash, Symbol, TrueClass, FalseClass, Range].each do |type|
     type_name      = type.name.downcase
     field_name     = "#{type_name}_field"
     not_field_name = "not_#{field_name}"
@@ -40,6 +40,7 @@ class FakeModelFoo
   validate :symbol_field_cannot_be_short
   validate :trueclass_field_cannot_be_false
   validate :falseclass_field_cannot_be_true
+  validate :range_field_cannot_be_empty
 
   def regexp_field_cannot_be_empty
     errors.add(:regexp_field, "can't be empty") if regexp_field.inspect.length < 3
@@ -64,6 +65,10 @@ class FakeModelFoo
   def falseclass_field_cannot_be_true
     errors.add(:falseclass_field, "can't be true") if falseclass_field == true
   end
+
+  def range_field_cannot_be_empty
+    errors.add(:range_field, "can't be negative") if !range_field.nil? && range_field.min < 0
+  end
 end
 
 describe 'be_valid_when' do
@@ -72,7 +77,7 @@ describe 'be_valid_when' do
   def invalid_values_for(type_name)
     { integer: 42, bignum: 42**42, float: 3.14, complex: 42.to_c, rational: 42.to_r,
       bigdecimal: BigDecimal.new('42'), string: 'value', regexp: /^value$/, array: [1, 2],
-      hash: {}, symbol: :value
+      hash: {}, symbol: :value, range: 2..42
     }.reject do |key|
       if type_name.is_a? Symbol
         key == type_name
@@ -175,6 +180,13 @@ describe 'be_valid_when' do
       description: {
         no_arguments: /^be valid when #symbol_field is a symbol \(:value\)$/,
         one_argument: /^be valid when #symbol_field is a symbol \(:some_symbol\)$/
+      }
+    },
+    range: {
+      argument: { passing: 1..2, failing: -3..4 },
+      description: {
+        no_arguments: /^be valid when #range_field is a range \(2..42\)$/,
+        one_argument: /^be valid when #range_field is a range \(1..2\)$/
       }
     }
   }.each do |name, props|
