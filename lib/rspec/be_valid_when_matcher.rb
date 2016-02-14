@@ -15,7 +15,7 @@ module RSpec
       # @raise ArgumentError if field name is not a symbol.
       def initialize(field)
         unless field.instance_of? Symbol
-          fail ArgumentError, "field name should be symbol (#{field.inspect})"
+          raise ArgumentError, "field name should be symbol (#{field.inspect})"
         end
 
         @field     = field
@@ -93,7 +93,8 @@ module RSpec
         number_of_arguments = args.size
 
         if number_of_arguments > 2 || number_of_arguments == 0
-          fail ArgumentError, "wrong number of arguments (#{number_of_arguments} insted of 1 or 2)"
+          raise ArgumentError, "wrong number of arguments (#{number_of_arguments}
+            insted of 1 or 2)"
         else
           self.value = args.shift
           @message = args.first
@@ -124,7 +125,7 @@ module RSpec
         symbol:     { value: :value, type: Symbol },
         range:      { value: 2..42, type: Range } }.each do |name, properties|
         define_method "is_#{name}" do |value = properties[:value]|
-          fail ArgumentError, "should be #{name}" unless value.is_a? properties[:type]
+          raise ArgumentError, "should be #{name}" unless value.is_a? properties[:type]
 
           is(value, "a #{name}")
         end
@@ -150,11 +151,11 @@ module RSpec
       end
 
       def assert_value_existence
-        fail ArgumentError, 'missing value' unless @value_set
+        raise ArgumentError, 'missing value' unless @value_set
       end
 
       def assert_model_existance
-        fail ArgumentError, 'missing model' if @model.nil?
+        raise ArgumentError, 'missing model' if @model.nil?
       end
 
       def setup_model(model)

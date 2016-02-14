@@ -58,11 +58,11 @@ describe 'be_valid_when' do
       subject { be_valid_when :field }
 
       it 'should fail on #matches?' do
-        expect { subject.matches? model }.to raise_error ArgumentError
+        expect { subject.matches?(model) }.to raise_error ArgumentError
       end
 
       it 'should fail on #does_not_match?' do
-        expect { subject.does_not_match? model }.to raise_error ArgumentError
+        expect { subject.does_not_match?(model) }.to raise_error ArgumentError
       end
 
       it 'should fail on #failure_message' do
@@ -88,11 +88,11 @@ describe 'be_valid_when' do
       subject { be_valid_when :field, 'value' }
 
       it 'should not fail on #matches?' do
-        expect { subject.matches? model }.not_to raise_error
+        expect { subject.matches?(model) }.not_to raise_error
       end
 
       it 'should not fail on #does_not_match?' do
-        expect { subject.does_not_match? model }.not_to raise_error
+        expect { subject.does_not_match?(model) }.not_to raise_error
       end
     end
   end
@@ -106,11 +106,11 @@ describe 'be_valid_when' do
       subject { be_valid_when :field, 'value', 'some text' }
 
       it 'should not fail on #matches?' do
-        expect { subject.matches? model }.not_to raise_error
+        expect { subject.matches?(model) }.not_to raise_error
       end
 
       it 'should not fail on #does_not_match?' do
-        expect { subject.does_not_match? model }.not_to raise_error
+        expect { subject.does_not_match?(model) }.not_to raise_error
       end
     end
   end
@@ -147,26 +147,26 @@ describe 'be_valid_when' do
     context 'using #matches?' do
       it 'is setting the proper field using the provided value' do
         model.field = nil
-        subject.is('value').matches? model
+        subject.is('value').matches?(model)
         expect(model.field).to eq 'value'
       end
 
       it 'returns proper result' do
-        expect(subject.is('value').matches? model).to eq true
-        expect(subject.is(nil).matches? model).to eq false
+        expect(subject.is('value').matches?(model)).to eq true
+        expect(subject.is(nil).matches?(model)).to eq false
       end
     end
 
     context 'using #does_not_match?' do
       it 'is setting the proper field using the provided value' do
         model.field = nil
-        subject.is('value').does_not_match? model
+        subject.is('value').does_not_match?(model)
         expect(model.field).to eq 'value'
       end
 
       it 'returns proper result' do
-        expect(subject.is('value').does_not_match? model).to eq false
-        expect(subject.is(nil).does_not_match? model).to eq true
+        expect(subject.is('value').does_not_match?(model)).to eq false
+        expect(subject.is(nil).does_not_match?(model)).to eq true
       end
     end
   end

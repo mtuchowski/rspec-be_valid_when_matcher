@@ -47,11 +47,11 @@ class FakeModelFoo
   end
 
   def array_field_cannot_be_empty
-    errors.add(:array_field, "can't be empty") if !array_field.nil? && array_field.length == 0
+    errors.add(:array_field, "can't be empty") if !array_field.nil? && array_field.empty?
   end
 
   def hash_field_cannot_be_empty
-    errors.add(:hash_field, "can't be empty") if !hash_field.nil? && hash_field.keys.length == 0
+    errors.add(:hash_field, "can't be empty") if !hash_field.nil? && hash_field.keys.empty?
   end
 
   def symbol_field_cannot_be_short

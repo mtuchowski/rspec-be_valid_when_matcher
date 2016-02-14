@@ -14,8 +14,8 @@ RSpec.shared_examples 'sets the field value' do
     expect { subject.matches? model }.not_to raise_error
     expect { subject.does_not_match? model }.not_to raise_error
 
-    expect(subject.matches? model).to eq true
-    expect(subject.does_not_match? model).to eq false
+    expect(subject.matches?(model)).to eq true
+    expect(subject.does_not_match?(model)).to eq false
 
     expect { subject.description }.not_to raise_error
   end
